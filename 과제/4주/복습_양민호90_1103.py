@@ -29,7 +29,7 @@ X =titanic.drop(['survived','deck','alone','who','adult_male','alive','embark_to
 X =X*1
 y = titanic['survived']
 X_train, X_test, y_train, y_test =train_test_split(X,y, test_size=0.2, random_state=111)
-model =LogisticRegression(max_iter=100)
+model =LogisticRegression(max_iter=200)
 #SequentialFeatureSelector
 #SFS (모델을 선정할 때 어떤 방법으로 선정할지, 선정방법, scoring =어떤 평가로 볼건지?, cv= 교차검증값들(folds))
 #모델 선정 기준 설정
@@ -52,19 +52,6 @@ print(sfs_back_.k_feature_names_)
 
 print('stepwise:')
 print(sfs_step_.k_feature_names_)
-
-#시각화를 통해서 피처를 선택했을 때 어떤 식의 평가나오는지
-
-fig, ax= plt.subplots(1,3, figsize=(18,6))
-ax[0].plot(range(1, len(sfs_for_.subsets_)+1),[sfs_for_.subsets_[i]['avg_score'] for i in sfs_for_.subsets_],)
-ax[0].set_title('forward')
-
-ax[1].plot(range(1, len(sfs_back_.subsets_)+1),[sfs_back_.subsets_[i]['avg_score'] for i in sfs_back_.subsets_],)
-ax[1].set_title('backward')
-
-#fig, ax= plt.subplots(1,3, figsize=(18,6))
-ax[2].plot(range(1, len(sfs_step_.subsets_)+1),[sfs_step_.subsets_[i]['avg_score'] for i in sfs_step_.subsets_],)
-ax[2].set_title('stepwise')
 
 X,y = load_iris(return_X_y=True)
 model = LogisticRegression(max_iter=100)
@@ -122,7 +109,7 @@ for name, model in models.items():
         selected_features = ', '.join(X.columns[selector.support_])
         
         # 결과를 DataFrame에 추가
-        result_row = pd.DataFrame({
+        resultrow = pd.DataFrame({
             'Model': [name],
             'Dataset': [dataset_name],
             'Accuracy': [accuracy],
@@ -131,6 +118,6 @@ for name, model in models.items():
             'F1': [f1],
             'Selected Features': [selected_features]
         })
-        results = pd.concat([results, result_row], ignore_index=True)
+        results = pd.concat([results, resultrow], ignore_index=True)
         
 print(results)
